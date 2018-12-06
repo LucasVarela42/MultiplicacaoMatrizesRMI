@@ -20,12 +20,15 @@ import java.util.logging.Logger;
  * @author Lucas
  */
 public class MultiplicacaoMatrizesMain {
-
+    
+    public static int[][] auxSub;
+    static int count = 0;
+    
     public static void main(String[] args) {
         System.out.println("Iniciando o gerenciador de segurança...");
         System.setProperty("java.security.policy", "file:./client.policy");
         try {
-            String hostName = InetAddress.getByName("10.151.31.157").getHostAddress();
+            String hostName = InetAddress.getByName("10.151.34.29").getHostAddress();
             System.out.println(hostName);
             System.setProperty("java.rmi.server.hostname", hostName);
         } catch (UnknownHostException ex) {
@@ -53,32 +56,6 @@ public class MultiplicacaoMatrizesMain {
 
         //matrizC = matrizA.montarMatriz(subMatrizes);
         try {
-            int count = 0;
-            MultiplicacaoMatrizesInterface matrizService = (MultiplicacaoMatrizesInterface) Naming.lookup("rmi://localhost:1099/MultiplicacaoMatrizes");
-
-            for (int[][] subMatrize : subMatrizes) {
-                subMatrize = matrizService.multiplicacao(subMatrize, matrizB.getMatriz());
-                for (int[] is : subMatrize) {
-                    aux.add(is);
-                }
-                subMatrizes.set(count, subMatrize);
-                System.out.println("\n------- matriz C Cliente");
-                for (int i = 0; i < subMatrize.length; i++) {
-                    for (int j = 0; j < subMatrize.length; j++) {
-                        System.out.print(subMatrize[i][j] + "\t");
-                    }
-                    System.out.println("\n");
-                }
-                count++;
-            }
-
-            //matrizC = matrizA.montarMatriz(aux);
-            for (int[] is : aux) {
-                    for (int i : is) {
-                       System.out.print(i+"\t");
-                }
-                    System.out.println("\n");
-            }
 
 //            // first matrix parts
 //            int[][] a_1 = new int[tamanho / 2][tamanho / 2];
@@ -132,7 +109,51 @@ public class MultiplicacaoMatrizesMain {
 //
 //            Registry server_4 = LocateRegistry.getRegistry(args[3], 1099);
 //            MultiplicacaoMatrizesInterface calc_4 = (MultiplicacaoMatrizesInterface) server_4.lookup("MultiplicacaoMatrizes");
-//            
+
+            
+
+            for (int[][] subMatrize : subMatrizes) {
+                
+                Registry server_1 = LocateRegistry.getRegistry(args[count], 1099);
+                MultiplicacaoMatrizesInterface calc_1 = (MultiplicacaoMatrizesInterface) server_1.lookup("MultiplicacaoMatrizes");
+                
+                Runnable runnable = () -> {
+                    try {
+                        
+                        System.out.println("\tProcessando "+count+" parte da matriz... ");
+                        auxSub = calc_1.multiplicacao(matrizA.getMatriz(), matrizB.getMatriz());
+                        
+                    } catch (RemoteException ex) {
+                        System.out.println("Erro Runnable: " + ex.getMessage());
+                    }                    
+                };
+                subMatrize = auxSub;
+                
+                Thread thread_1 = new Thread(runnable);
+                thread_1.start();
+                thread_1.join();
+                //subMatrize = matrizService.multiplicacao(subMatrize, matrizB.getMatriz());
+                for (int[] is : subMatrize) {
+                    aux.add(is);
+                }
+                subMatrizes.set(count, subMatrize);
+                System.out.println("\n------- matriz C Cliente");
+                for (int i = 0; i < subMatrize.length; i++) {
+                    for (int j = 0; j < subMatrize.length; j++) {
+                        System.out.print(subMatrize[i][j] + "\t");
+                    }
+                    System.out.println("\n");
+                }
+                count++;
+            }
+
+            //matrizC = matrizA.montarMatriz(aux);
+            for (int[] is : aux) {
+                for (int i : is) {
+                    System.out.print(i + "\t");
+                }
+                System.out.println("\n");
+            }
 //            Runnable r1 = () -> {
 //                try {
 //                    System.out.println("\tProcessando primeira parte da matriz... ");
