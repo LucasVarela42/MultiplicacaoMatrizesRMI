@@ -12,17 +12,22 @@ import java.rmi.Naming;
  * @author Lucas
  */
 public class MultiplicacaoMatrizesMain {
-
+    
     public static void main(String[] args) {
-        System.out.println("\tIniciando o gerenciador de segurança...");
+        MultiplicacaoMatrizes matriz;
+        System.out.println("Iniciando o gerenciador de segurança...");
         System.setProperty("java.security.policy", "file:./client.policy");
 
         System.out.println("Iniciando MultiplicacaoMatrizesClientRMI...");
         try {
-            MultiplicacaoMatrizesInterface matriz = (MultiplicacaoMatrizesInterface)
+            MultiplicacaoMatrizesInterface matrizService = (MultiplicacaoMatrizesInterface) 
                     Naming.lookup("rmi://localhost:1099/MultiplicacaoMatrizes");
             
+            matriz = new MultiplicacaoMatrizes();
             
+            matriz.setMatC(matrizService.multiplicacao(matriz.getMatA(), matriz.getMatB()));
+            System.out.println(matriz.toString());
+
         } catch (Exception e) {
             System.err.println("\tErro: " + e.getMessage());
             System.exit(1);
