@@ -13,6 +13,5 @@ import java.rmi.RemoteException;
  * @author Lucas
  */
 public interface MultiplicacaoMatrizesInterface extends Remote {
-    public float add(float valA, float valB) throws RemoteException; // Teste para ver se está funcionando o RMI
-    public String multiplicacao(String matrizA, String matrizB) throws RemoteException;
+    public int[][] multiplicacao(int[][] matrizA, int[][] matrizB) throws RemoteException;
 }

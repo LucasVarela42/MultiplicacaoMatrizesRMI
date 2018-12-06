@@ -14,11 +14,15 @@ import java.rmi.Naming;
 public class MultiplicacaoMatrizesMain {
 
     public static void main(String[] args) {
+        System.out.println("\tIniciando o gerenciador de segurança...");
+        System.setProperty("java.security.policy", "file:./client.policy");
+
         System.out.println("Iniciando MultiplicacaoMatrizesClientRMI...");
         try {
-            MultiplicacaoMatrizesInterface matriz = (MultiplicacaoMatrizesInterface) Naming.lookup("rmi://localhost:1099/MultiplicacaoMatrizes");
-            System.out.println("\tExecutando ADD(2,2): "+matriz.add(2, 2)); // Teste do RMI
-            //System.out.println("\tExecutando multiplicacao(matA,matB): " + calc.multiplicacao("", "")); //Testar
+            MultiplicacaoMatrizesInterface matriz = (MultiplicacaoMatrizesInterface)
+                    Naming.lookup("rmi://localhost:1099/MultiplicacaoMatrizes");
+            
+            
         } catch (Exception e) {
             System.err.println("\tErro: " + e.getMessage());
             System.exit(1);

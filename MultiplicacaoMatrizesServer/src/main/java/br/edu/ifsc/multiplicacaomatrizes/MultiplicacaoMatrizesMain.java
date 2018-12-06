@@ -17,9 +17,12 @@ public class MultiplicacaoMatrizesMain {
     public static void main(String[] args) {
         System.out.println("Iniciando CalculadoraServerRMI...");
         try {
-            // Inicia o gerenciador de seguranÃ§a
+            // Inicia o gerenciador de segurança
             System.out.println("\tIniciando o gerenciador de segurança...");
-            System.setSecurityManager(new SecurityManager());
+            System.setProperty("java.security.policy","file:./server.policy");
+
+            //usar apenas se for RMI codebase 
+            //System.setSecurityManager(new SecurityManager());
 
             // Instancia o objeto localmente
             System.out.println("\tInstanciado o objeto localmente...");
@@ -30,7 +33,7 @@ public class MultiplicacaoMatrizesMain {
             LocateRegistry.createRegistry(1099);
             Naming.rebind("rmi://localhost:1099/MultiplicacaoMatrizes", matrizes);
 
-            // Aguardando requisiÃ§Ãµes
+            // Aguardando requisições
             System.out.println("\tAguardando requisições...");
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());

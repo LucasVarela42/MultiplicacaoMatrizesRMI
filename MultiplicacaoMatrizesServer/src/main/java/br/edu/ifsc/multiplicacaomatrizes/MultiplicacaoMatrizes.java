@@ -15,17 +15,24 @@ import java.rmi.server.UnicastRemoteObject;
 public class MultiplicacaoMatrizes extends UnicastRemoteObject implements MultiplicacaoMatrizesInterface {
 
     private static final long serialVersionUID = 1L;
+    private int[][] matrizC;
 
     public MultiplicacaoMatrizes() throws RemoteException {
     }
 
-    public float add(float vlrA, float vlrB) throws RemoteException {
-        System.out.println("\t\tCliente remoto invocou o método ADD...");
-        return vlrA + vlrB;
+    @Override
+    public int[][] multiplicacao(int[][] matrizA, int[][] matrizB) throws RemoteException {
+        matrizC = new int[matrizA.length][matrizB.length];
+        System.out.println("Fazendo multiplicação...");
+        for (int i = 0; i < matrizA.length; i++) {
+            for (int j = 0; j < matrizB.length; j++) {
+                for (int k = 0; k < matrizB.length; k++) {
+                    matrizC[i][j] += matrizA[i][k] * matrizB[k][j];
+                }
+            }
+        }
+        System.out.println("Multiplicação Finalizada!");
+        return matrizC;
     }
 
-    @Override
-    public String multiplicacao(String matrizA, String matrizB) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
 }
