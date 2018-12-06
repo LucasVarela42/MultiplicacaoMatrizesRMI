@@ -21,7 +21,7 @@ public class MultiplicacaoMatrizesMain {
             // Inicia o gerenciador de segurança
             System.out.println("\tIniciando o gerenciador de segurança...");
             System.setProperty("java.security.policy","file:./server.policy");
-            String hostName = InetAddress.getByName("10.151.31.157").getHostAddress();
+            String hostName = InetAddress.getByName("localhost").getHostAddress();
             System.out.println(hostName);
             System.setProperty("java.rmi.server.hostname", hostName);
 

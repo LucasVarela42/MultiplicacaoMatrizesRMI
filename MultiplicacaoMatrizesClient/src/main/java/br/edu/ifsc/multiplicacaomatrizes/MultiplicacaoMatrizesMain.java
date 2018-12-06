@@ -38,16 +38,16 @@ public class MultiplicacaoMatrizesMain {
             System.out.println(args[i]);
         }
 
-        int tamanho = 4;
-        Matriz matrizA = new Matriz("src/main/resources/matrizes/matA.txt", tamanho);
-        Matriz matrizB = new Matriz("src/main/resources/matrizes/matB.txt", tamanho);
+        int tamanho = 64;
+        Matriz matrizA = new Matriz("src/main/resources/matrizes/matATeste.txt", tamanho);
+        Matriz matrizB = new Matriz("src/main/resources/matrizes/matBTeste.txt", tamanho);
         int[][] matrizC = new int[tamanho][tamanho];
 
         System.out.println("Matriz A");
         System.out.println(matrizA.toString());
         System.out.println("Matriz B");
         System.out.println(matrizB.toString());
-
+        ArrayList<int[]> aux = new ArrayList<>();
         ArrayList<int[][]> subMatrizes = new ArrayList<>();
         subMatrizes = matrizA.separarMatriz(args.length);
 
@@ -58,6 +58,9 @@ public class MultiplicacaoMatrizesMain {
 
             for (int[][] subMatrize : subMatrizes) {
                 subMatrize = matrizService.multiplicacao(subMatrize, matrizB.getMatriz());
+                for (int[] is : subMatrize) {
+                    aux.add(is);
+                }
                 subMatrizes.set(count, subMatrize);
                 System.out.println("\n------- matriz C Cliente");
                 for (int i = 0; i < subMatrize.length; i++) {
@@ -68,11 +71,14 @@ public class MultiplicacaoMatrizesMain {
                 }
                 count++;
             }
-            
-            matrizC = matrizA.montarMatriz(subMatrizes);
-            
 
-            System.out.println("");
+            //matrizC = matrizA.montarMatriz(aux);
+            for (int[] is : aux) {
+                    for (int i : is) {
+                       System.out.print(i+"\t");
+                }
+                    System.out.println("\n");
+            }
 
 //            // first matrix parts
 //            int[][] a_1 = new int[tamanho / 2][tamanho / 2];

@@ -32,8 +32,6 @@ public class Matriz {
         this.matriz = matriz;
         this.tamanho = matriz.length;
     }
-    
-    
 
     private void carregarMatriz() {
         //Lendo arquivo da matriz
@@ -70,42 +68,29 @@ public class Matriz {
         return matrizSeparada;
     }
 
-    public int[][] montarMatriz(ArrayList<int[][]> matrizSeparada) {
-        int[][] matrizCompleta = new int[tamanho][tamanho];
-        int i = 0;
-        int count = 0;
-        for (int[][] separada : matrizSeparada) {
-            
-            for (int j = 0; j < tamanho; ++j) {;
-                for (int k = 0; k < tamanho; ++k) {
-                    matrizCompleta[j][k] = separada[i][k];
-                }
+    public ArrayList<int[]> montarMatriz(ArrayList<int[]> matrizSeparada) {
+        ArrayList<int[]> matrizCompleta = new ArrayList<>();
 
-                if (i < matrizSeparada.size() - 1) {
-                    i++;
-                } else {
-                    i = count;
-                }
-            }
-            count++;
-            
-        }
+        matrizCompleta = matrizSeparada;
+
         return matrizCompleta;
     }
-    
-    public static void divideMatrix(int[][] matrix, int[][] subMatrix, int iB, int jB) 
-    {
-        for(int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++)
-            for(int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++)
+
+    public static void divideMatrix(int[][] matrix, int[][] subMatrix, int iB, int jB) {
+        for (int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++) {
+            for (int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++) {
                 subMatrix[i1][j1] = matrix[i2][j2];
+            }
+        }
     }
 
-    public static void buildMatrix(int[][] subMatrix, int[][] matrix, int iB, int jB) 
-    {
-        for(int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++)
-            for(int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++)
+    public static void buildMatrix(int[][] subMatrix, int[][] matrix, int iB, int jB) {
+        for (int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++) {
+            for (int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++) {
                 matrix[i2][j2] = subMatrix[i1][j1];
-    }   
+            }
+        }
+    }
 
     public int[][] getMatriz() {
         return matriz;
