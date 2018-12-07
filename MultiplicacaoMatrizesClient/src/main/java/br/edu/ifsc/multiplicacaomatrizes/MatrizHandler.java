@@ -26,7 +26,7 @@ public class MatrizHandler implements Runnable {
     
     private ArrayList<MultiplicacaoMatrizesInterface> servers = new ArrayList();
     private boolean started = false;
-    private int nextServer = 0;
+    private static int nextServer = 0;
 
     public MatrizHandler(String[] args, int[][] matrizA, int[][] matrizB, int[][] matrizC) {
         this.matrizA = matrizA;
@@ -42,7 +42,8 @@ public class MatrizHandler implements Runnable {
     private synchronized void connection() {
         for (int i = 0; i < args.length; i++) {
             try {
-                MultiplicacaoMatrizesInterface matrizService = (MultiplicacaoMatrizesInterface) Naming.lookup("rmi://" + args[i] + ":1099/MultiplicacaoMatrizes");
+                MultiplicacaoMatrizesInterface matrizService = (MultiplicacaoMatrizesInterface) 
+                        Naming.lookup("rmi://" + args[i] + ":1099/MultiplicacaoMatrizes");
                 servers.add(matrizService);
             } catch (RemoteException ex) {
                 System.err.println(ex.getMessage());
@@ -57,9 +58,11 @@ public class MatrizHandler implements Runnable {
     }
 
     private synchronized MultiplicacaoMatrizesInterface getServer() {
-        System.out.println("Iniciando servidor: " + servers.get(nextServer));
         MultiplicacaoMatrizesInterface matrizesInterface = servers.get(nextServer);
+        System.out.println(servers.get(nextServer));
+        System.out.println(nextServer);
         nextServer++;
+        
         if (nextServer >= servers.size()) {
             nextServer = 0;
         }

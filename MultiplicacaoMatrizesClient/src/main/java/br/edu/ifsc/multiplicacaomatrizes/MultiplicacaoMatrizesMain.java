@@ -19,7 +19,7 @@ public class MultiplicacaoMatrizesMain {
         System.out.println("Iniciando o gerenciador de segurança...");
         System.setProperty("java.security.policy", "file:./client.policy");
         try {
-            String hostName = InetAddress.getByName("localhost").getHostAddress();
+            String hostName = InetAddress.getByName("10.151.34.29").getHostAddress();
             System.out.println(hostName);
             System.setProperty("java.rmi.server.hostname", hostName);
         } catch (UnknownHostException ex) {
@@ -27,9 +27,11 @@ public class MultiplicacaoMatrizesMain {
         }
 
         System.out.println("Iniciando MultiplicacaoMatrizesClientRMI...");
-        int tamanho = 4;
-        Matriz matrizA = new Matriz("src/main/resources/matrizes/matA.txt", tamanho);
-        Matriz matrizB = new Matriz("src/main/resources/matrizes/matB.txt", tamanho);
+        int tamanho = 8;
+        Matriz matrizA = new Matriz("src/main/resources/matrizes/matA_apresent.txt", tamanho);
+        System.out.println(matrizA.toString());
+        Matriz matrizB = new Matriz("src/main/resources/matrizes/matB_apresent.txt", tamanho);
+        System.out.println(matrizB.toString());
         Matriz matrizC;
 
         ArrayList<Thread> threads = new ArrayList();
@@ -63,6 +65,7 @@ public class MultiplicacaoMatrizesMain {
             matrizC.exportarMatriz(matrizC.getMatriz(), "src/main/resources/matrizes/matC.txt");
             System.out.println(matrizC.toString());
             System.out.println(MD5Checksum.getMD5Checksum("src/main/resources/matrizes/matC.txt"));
+            System.out.println(MD5Checksum.getMD5Checksum("src/main/resources/matrizes/matC_apresent.md5"));
 
         } catch (Exception e) {
             System.err.println("\tErro Main: " + e.getMessage());
