@@ -5,7 +5,9 @@
  */
 package br.edu.ifsc.multiplicacaomatrizes;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -62,34 +64,27 @@ public class Matriz {
                 }
                 m++;
             }
-
             matrizSeparada.add(subMatriz);
         }
         return matrizSeparada;
     }
 
-    public ArrayList<int[]> montarMatriz(ArrayList<int[]> matrizSeparada) {
-        ArrayList<int[]> matrizCompleta = new ArrayList<>();
-
-        matrizCompleta = matrizSeparada;
-
-        return matrizCompleta;
-    }
-
-    public static void divideMatrix(int[][] matrix, int[][] subMatrix, int iB, int jB) {
-        for (int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++) {
-            for (int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++) {
-                subMatrix[i1][j1] = matrix[i2][j2];
+    public void exportarMatriz(int matrix[][], String path) throws Exception {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        for (int l = 0; l < matrix.length; l++) {
+            for (int c = 0; c < matrix[0].length; c++) {
+                bw.write(matrix[l][c] + "");
+                if ((l != (matrix.length - 1)) || (c != (matrix.length - 1))) {
+                    bw.newLine();
+                }
             }
         }
-    }
-
-    public static void buildMatrix(int[][] subMatrix, int[][] matrix, int iB, int jB) {
-        for (int i1 = 0, i2 = iB; i1 < subMatrix.length; i1++, i2++) {
-            for (int j1 = 0, j2 = jB; j1 < subMatrix.length; j1++, j2++) {
-                matrix[i2][j2] = subMatrix[i1][j1];
-            }
-        }
+        bw.close();
     }
 
     public int[][] getMatriz() {

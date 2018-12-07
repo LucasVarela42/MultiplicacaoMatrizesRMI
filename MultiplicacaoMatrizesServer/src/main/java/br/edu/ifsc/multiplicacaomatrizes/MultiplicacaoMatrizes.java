@@ -32,14 +32,6 @@ public class MultiplicacaoMatrizes extends UnicastRemoteObject implements Multip
             }
         }
         System.out.println("Multiplicação Finalizada!");
-        
-        System.out.println("\n------- matriz C");
-        for (int i = 0; i < matrizA.length; i++) {
-            for (int j = 0; j < matrizB.length; j++) {
-                System.out.print(matrizC[i][j] + "\t");
-            }
-            System.out.println("\n");
-        }
         return matrizC;
     }
 
