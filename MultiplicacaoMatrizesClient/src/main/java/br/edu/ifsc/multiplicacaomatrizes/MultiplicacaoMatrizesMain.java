@@ -19,7 +19,7 @@ public class MultiplicacaoMatrizesMain {
         System.out.println("Iniciando o gerenciador de segurança...");
         System.setProperty("java.security.policy", "file:./client.policy");
         try {
-            String hostName = InetAddress.getByName("10.151.34.29").getHostAddress();
+            String hostName = InetAddress.getByName("localhost").getHostAddress();
             System.out.println(hostName);
             System.setProperty("java.rmi.server.hostname", hostName);
         } catch (UnknownHostException ex) {
@@ -44,13 +44,12 @@ public class MultiplicacaoMatrizesMain {
             for (int[][] subMatrize : subMatrizes) {
                 MatrizHandler matrizHandler = new MatrizHandler(
                         args,
-                        matrizA.getMatriz(),
-                        matrizB.getMatriz(),
-                        subMatrize);
-                matrizCalculator = matrizHandler;
+                        subMatrize,
+                        matrizB.getMatriz());
                 Thread t = new Thread(matrizHandler);
                 threads.add(t);
                 t.start();
+                matrizCalculator = matrizHandler;
             }
 
             for (Thread t : threads) {
@@ -60,13 +59,13 @@ public class MultiplicacaoMatrizesMain {
                     System.err.println(ex.getMessage());
                 }
             }
-
-            matrizC = new Matriz(matrizCalculator.getMatrizC());
-            matrizC.exportarMatriz(matrizC.getMatriz(), "src/main/resources/matrizes/matC.txt");
+            
+            //Rever implementação!
+            matrizC = new Matriz(matrizB.montarMatriz(matrizCalculator.getMatrizC()));
             System.out.println(matrizC.toString());
+            matrizC.exportarMatriz(matrizC.getMatriz(), "src/main/resources/matrizes/matC.txt");
             System.out.println(MD5Checksum.getMD5Checksum("src/main/resources/matrizes/matC.txt"));
             System.out.println(MD5Checksum.getMD5Checksum("src/main/resources/matrizes/matC_apresent.md5"));
-
         } catch (Exception e) {
             System.err.println("\tErro Main: " + e.getMessage());
             System.exit(1);

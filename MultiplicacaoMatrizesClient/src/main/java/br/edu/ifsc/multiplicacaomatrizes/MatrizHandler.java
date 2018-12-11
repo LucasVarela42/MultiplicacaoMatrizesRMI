@@ -19,22 +19,22 @@ public class MatrizHandler implements Runnable {
     
     private static final long serialVersionUID = 1L;
 
-    private int[][] matrizA;
+    private int[][] subMatriz;
     private int[][] matrizB;
-    private int[][] matrizC;
+    private static ArrayList<int[][]> matrizC;
     private String[] args;
     
     private ArrayList<MultiplicacaoMatrizesInterface> servers = new ArrayList();
     private boolean started = false;
     private static int nextServer = 0;
 
-    public MatrizHandler(String[] args, int[][] matrizA, int[][] matrizB, int[][] matrizC) {
-        this.matrizA = matrizA;
+    public MatrizHandler(String[] args, int[][] subMatriz, int[][] matrizB) {
+        this.subMatriz = subMatriz;
         this.matrizB = matrizB;
-        this.matrizC = matrizC;
         this.args = args;
 
         if (!started) {
+            matrizC = new ArrayList<int[][]>();
             connection();
         }
     }
@@ -69,19 +69,28 @@ public class MatrizHandler implements Runnable {
         return matrizesInterface;
     }
 
-    public int[][] getMatrizC() {
+    public int[][] getSubMatriz() {
+        return subMatriz;
+    }
+
+    public void setSubMatriz(int[][] subMatriz) {
+        this.subMatriz = subMatriz;
+    }
+
+    public static ArrayList<int[][]> getMatrizC() {
         return matrizC;
     }
 
-    public void setMatrizC(int[][] matrizC) {
-        this.matrizC = matrizC;
+    public static void setMatrizC(ArrayList<int[][]> matrizC) {
+        MatrizHandler.matrizC = matrizC;
     }
+    
 
     @Override
     public void run() {
         try {
             MultiplicacaoMatrizesInterface matrizService = getServer();
-            matrizC = matrizService.multiplicacao(matrizA, matrizB);
+            matrizC.add(matrizService.multiplicacao(subMatriz, matrizB));
         } catch (Exception e) {
             System.err.println("\tErro: " + e.getMessage());
             System.exit(1);

@@ -69,6 +69,22 @@ public class Matriz {
         return matrizSeparada;
     }
 
+    public int[][] montarMatriz(ArrayList<int[][]> subMatrizes) {
+        int linha = 0, coluna = 0;
+        int[][] matrizFinal = new int[tamanho][tamanho];
+        for (int[][] subMatrize : subMatrizes) {
+            for (int[] is : subMatrize) {
+                for (int i : is) {
+                    matrizFinal[linha][coluna] = i;
+                    coluna++;
+                }
+                linha++;
+                coluna = 0;
+            }
+        }
+        return matrizFinal;
+    }
+
     public void exportarMatriz(int matrix[][], String path) throws Exception {
         File file = new File(path);
         if (!file.exists()) {
@@ -77,7 +93,7 @@ public class Matriz {
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
         for (int l = 0; l < matrix.length; l++) {
-            for (int c = 0; c < matrix[0].length; c++) {
+            for (int c = 0; c < matrix.length; c++) {
                 bw.write(matrix[l][c] + "");
                 if ((l != (matrix.length - 1)) || (c != (matrix.length - 1))) {
                     bw.newLine();
